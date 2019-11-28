@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "907836929757",
+    "firebase_url": "https://shopper-250f1.firebaseio.com",
+    "project_id": "shopper-250f1",
+    "storage_bucket": "shopper-250f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907836929757:android:719fd87b3411034de34d34",
+        "android_client_info": {
+          "package_name": "com.dev.shopper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "907836929757-et1le5n7s6cskr6u5na83rm5u7d6ulq9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev.shopper",
+            "certificate_hash": "9c4eb8844287c243e4c3a7955528df9d6772e0a5"
+          }
+        },
+        {
+          "client_id": "907836929757-l1ntnjhablt3bljg3qltk8dirt79b6v7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFK8JQL6vg3nCxvsos_bgbgUjhR5Z0MKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "907836929757-l1ntnjhablt3bljg3qltk8dirt79b6v7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
