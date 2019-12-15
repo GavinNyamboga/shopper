@@ -36,7 +36,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         private ElegantNumberButton numberButton;
         private TextView productPrice, productDescription, productName;
         private Button addToCartButton;
-        private String productID = "";
+        private String productID = "", state = "Normal";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -63,9 +63,25 @@ public class ProductDetailsActivity extends AppCompatActivity {
             {
                 addingToCartList();
 
+                if (state.equals("Order Placed") || state.equals("Order Shipped"))
+                {
+                    Toast.makeText(ProductDetailsActivity.this, "you can buy more products, once your order is shipped or confirmed", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    addingToCartList();
+                }
+
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        CheckOrderState();
     }
 
     private void addingToCartList()
@@ -151,6 +167,40 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void CheckOrderState()
+    {
+        DatabaseReference ordersRef;
+        ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(Prevalent.currentOnlineUsers.getPhone());
+
+        ordersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                {
+                    String shippingState = dataSnapshot.child("State").getValue().toString();
+
+
+                    if (shippingState.equals("shipped"))
+                    {
+                        state = "Order Shipped";
+
+                    }
+                    else if (shippingState.equals("not shipped"))
+                    {
+                        state = "Order Placed";
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
 
             }
         });

@@ -96,7 +96,7 @@
         android:textAllCaps="false"
         android:textSize="18sp"
         android:text="Login"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/black"/>
 
     <TextView
         android:id="@+id/admin_link"
