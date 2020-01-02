@@ -1,4 +1,4 @@
-package com.dev.shopper;
+package com.dev.shopper.Admin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.dev.shopper.Buyers.HomeActivity;
+import com.dev.shopper.Buyers.MainActivity;
+import com.dev.shopper.R;
+
 public class AdminCategoryActivity extends AppCompatActivity
 {
 
@@ -15,7 +19,7 @@ public class AdminCategoryActivity extends AppCompatActivity
     private ImageView glasses,hatsCaps,walletsBagsPurses,shoes;
     private ImageView headPhones,laptops,watches, mobilephones;
 
-    private Button LogoutBtn, CheckOrdersBtn;
+    private Button LogoutBtn, CheckOrdersBtn, MaintainProductsBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -25,12 +29,25 @@ public class AdminCategoryActivity extends AppCompatActivity
 
         LogoutBtn = (Button) findViewById(R.id.admin_logout_btn);
         CheckOrdersBtn = (Button) findViewById(R.id.check_orders_btn);
+        MaintainProductsBtn = (Button) findViewById(R.id.maintain_products_btn);
+
+
+        MaintainProductsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminCategoryActivity.this, HomeActivity.class);
+                intent.putExtra("Admin","Admin");
+                startActivity(intent);
+
+            }
+        });
+
 
         LogoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(AdminCategoryActivity.this, AdminNewOrdersActivity.class);
+                Intent intent = new Intent(AdminCategoryActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
 
@@ -42,7 +59,7 @@ public class AdminCategoryActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(AdminCategoryActivity.this, MainActivity.class);
+                Intent intent = new Intent(AdminCategoryActivity.this, AdminNewOrdersActivity.class);
                 startActivity(intent);
                 finish();
 

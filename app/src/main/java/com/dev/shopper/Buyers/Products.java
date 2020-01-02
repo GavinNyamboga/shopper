@@ -1,4 +1,4 @@
-package com.dev.shopper;
+package com.dev.shopper.Buyers;
 
 public class Products
 {

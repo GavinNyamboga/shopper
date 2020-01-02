@@ -1,4 +1,4 @@
-package com.dev.shopper;
+package com.dev.shopper.Buyers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,8 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dev.shopper.Admin.AdminCategoryActivity;
 import com.dev.shopper.Model.Users;
 import com.dev.shopper.Prevalent.Prevalent;
+import com.dev.shopper.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText loginPhone, loginPassword;
     private Button LoginButton;
-    private TextView AdminLink, NotAdminLink;
+    private TextView AdminLink, NotAdminLink, ForgotPassword;
     private ProgressDialog loadingBar;
 
     private String parentDBName = "Users";
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         loginPassword = (EditText) findViewById(R.id.login_password);
         AdminLink = (TextView) findViewById(R.id.admin_link);
         NotAdminLink = (TextView) findViewById(R.id.not_admin_link);
+        ForgotPassword = (TextView) findViewById(R.id.forgot_password);
 
 
         loadingBar = new ProgressDialog(this);

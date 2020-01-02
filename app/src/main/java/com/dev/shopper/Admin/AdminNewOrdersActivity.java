@@ -1,4 +1,4 @@
-package com.dev.shopper;
+package com.dev.shopper.Admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.dev.shopper.Model.AdminOrders;
+import com.dev.shopper.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
@@ -93,6 +94,8 @@ public class AdminNewOrdersActivity extends AppCompatActivity {
                                         }
                                         else //admin presses no
                                             {
+                                                Intent intent = new Intent(AdminNewOrdersActivity.this,AdminNewOrdersActivity.class);
+                                                startActivity(intent);
                                                 finish();
 
                                             }
@@ -121,6 +124,7 @@ public class AdminNewOrdersActivity extends AppCompatActivity {
     {
         ordersRef.child(uID).removeValue();
     }
+
 
 
     public static class AdminOrdersViewHolder extends RecyclerView.ViewHolder

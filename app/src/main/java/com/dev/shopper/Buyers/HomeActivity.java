@@ -1,14 +1,15 @@
-package com.dev.shopper;
+package com.dev.shopper.Buyers;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.dev.shopper.Admin.AdminMaintainProductsActivity;
 import com.dev.shopper.Prevalent.Prevalent;
+import com.dev.shopper.R;
 import com.dev.shopper.ViewHolder.ProductViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,10 +47,22 @@ public class HomeActivity extends AppCompatActivity
     private RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
+    private String type="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if(bundle!=null)
+        {
+            type=getIntent().getExtras().get("Admin").toString();
+
+        }
+
 
         ProductsRef = FirebaseDatabase.getInstance().getReference().child("Products");
 
@@ -64,8 +77,14 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this,CartActivity.class);
-                startActivity(intent);
+
+                if (!type.equals("Admin"))
+                {
+                    Intent intent = new Intent(HomeActivity.this,CartActivity.class);
+                    startActivity(intent);
+                }
+
+
             }
         });
 
@@ -82,8 +101,11 @@ public class HomeActivity extends AppCompatActivity
         TextView userNameTextView = headerView.findViewById(R.id.user_profile_name);
         CircleImageView profileImageView = headerView.findViewById(R.id.user_profile_image);
 
-        userNameTextView.setText(Prevalent.currentOnlineUsers.getName());
-        Picasso.get().load(Prevalent.currentOnlineUsers.getImage()).placeholder(R.drawable.profile).into(profileImageView);
+        if (!type.equals("Admin"))
+        {
+            userNameTextView.setText(Prevalent.currentOnlineUsers.getName());
+            Picasso.get().load(Prevalent.currentOnlineUsers.getImage()).placeholder(R.drawable.profile).into(profileImageView);
+        }
 
         recyclerView = findViewById(R.id.recycler_menu);
         recyclerView.setHasFixedSize(true);
@@ -112,13 +134,25 @@ public class HomeActivity extends AppCompatActivity
                         holder.txtProductPrice.setText("Price = Ksh " + model.getPrice());
                         Picasso.get().load(model.getImage()).into(holder.imageView);
 
+
+
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view)
                             {
-                                Intent intent = new Intent(HomeActivity.this,ProductDetailsActivity.class);
-                                intent.putExtra("pid", model.getPid());
-                                startActivity(intent);
+
+                                if(type.equals("Admin"))
+                                {
+                                    Intent intent = new Intent(HomeActivity.this, AdminMaintainProductsActivity.class);
+                                    intent.putExtra("pid",model.getPid());
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Intent intent = new Intent(HomeActivity.this,ProductDetailsActivity.class);
+                                    intent.putExtra("pid", model.getPid());
+                                    startActivity(intent);
+                                }
+
                             }
                         });
 
@@ -176,14 +210,23 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_cart)
         {
-            Intent intent = new Intent(HomeActivity.this,CartActivity.class);
-            startActivity(intent);
+            if (!type.equals("Admin"))
+            {
+                Intent intent = new Intent(HomeActivity.this,CartActivity.class);
+                startActivity(intent);
+
+            }
+
 
         }
         else if (id == R.id.nav_search)
         {
-            Intent intent = new Intent(this,SearchProductsActivity.class);
-            startActivity(intent);
+            if (!type.equals("Admin"))
+            {
+                Intent intent = new Intent(this,SearchProductsActivity.class);
+                startActivity(intent);
+            }
+
         }
         else if (id == R.id.nav_categories)
         {
@@ -191,17 +234,26 @@ public class HomeActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_settings)
         {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+            if (!type.equals("Admin"))
+            {
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+            }
+
         }
         else if (id == R.id.nav_logout)
         {
-            Paper.book().destroy();
+            if (!type.equals("Admin"))
+            {
+                Paper.book().destroy();
 
-            Intent intent = new Intent(HomeActivity.this,MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
+                Intent intent = new Intent(HomeActivity.this,MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+
+
         }
 
 

@@ -1,4 +1,4 @@
-package com.dev.shopper;
+package com.dev.shopper.Buyers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.dev.shopper.Model.Cart;
 import com.dev.shopper.Prevalent.Prevalent;
+import com.dev.shopper.R;
 import com.dev.shopper.ViewHolder.CartViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -28,8 +29,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
 
 public class CartActivity extends AppCompatActivity
 {

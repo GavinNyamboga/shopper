@@ -1,4 +1,4 @@
-package com.dev.shopper;
+package com.dev.shopper.Buyers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,17 +13,15 @@ import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.dev.shopper.Prevalent.Prevalent;
+import com.dev.shopper.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -63,14 +61,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
             {
                 addingToCartList();
 
-                if (state.equals("Order Placed") || state.equals("Order Shipped"))
+               if (state.equals("Order Placed") || state.equals("Order Shipped"))
                 {
                     Toast.makeText(ProductDetailsActivity.this, "you can buy more products, once your order is shipped or confirmed", Toast.LENGTH_LONG).show();
                 }
                 else
                 {
                     addingToCartList();
-                }
+                    }
 
             }
         });
@@ -181,7 +179,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists())
                 {
-                    String shippingState = dataSnapshot.child("State").getValue().toString();
+                    String shippingState = dataSnapshot.child("state").getValue().toString();
 
 
                     if (shippingState.equals("shipped"))

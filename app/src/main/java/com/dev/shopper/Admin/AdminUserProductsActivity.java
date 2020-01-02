@@ -1,4 +1,4 @@
-package com.dev.shopper;
+package com.dev.shopper.Admin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dev.shopper.Model.Cart;
+import com.dev.shopper.R;
 import com.dev.shopper.ViewHolder.CartViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
