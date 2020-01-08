@@ -2,16 +2,20 @@ package com.dev.shopper.Buyers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.dev.shopper.R;
 import com.dev.shopper.ViewHolder.ProductViewHolder;
@@ -36,8 +40,20 @@ public class SearchProductsActivity extends AppCompatActivity {
         inputText = findViewById(R.id.search_product_name);
         searchBtn = findViewById(R.id.search_product_btn);
         searchList = findViewById(R.id.search_list);
-        searchList.setLayoutManager(new LinearLayoutManager(SearchProductsActivity.this));
+        searchList.setLayoutManager(new GridLayoutManager(SearchProductsActivity.this,2));
 
+
+        inputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH)
+                {
+                    SearchInput = inputText.getText().toString();
+                    onStart();
+                }
+                return false;
+            }
+        });
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override

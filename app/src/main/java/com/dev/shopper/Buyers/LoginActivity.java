@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -29,12 +30,13 @@ import io.paperdb.Paper;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText loginPhone, loginPassword;
-    private Button LoginButton;
+    private Button LoginButton,RegisterBtn;
     private TextView AdminLink, NotAdminLink, ForgotPassword;
     private ProgressDialog loadingBar;
 
     private String parentDBName = "Users";
     private CheckBox RememberMeChkBox;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
         AdminLink = (TextView) findViewById(R.id.admin_link);
         NotAdminLink = (TextView) findViewById(R.id.not_admin_link);
         ForgotPassword = (TextView) findViewById(R.id.forgot_password);
+        RegisterBtn = (Button) findViewById(R.id.click_register_btn);
+
 
 
         loadingBar = new ProgressDialog(this);
@@ -83,6 +87,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        RegisterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 
     }
 
@@ -106,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
             AllowAccess(phone,password);
         }
     }
+
 
 
     private void AllowAccess(final String phone, final String password)
@@ -173,4 +187,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

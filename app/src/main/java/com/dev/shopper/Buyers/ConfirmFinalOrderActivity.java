@@ -15,8 +15,11 @@ import com.dev.shopper.Prevalent.Prevalent;
 import com.dev.shopper.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,6 +47,8 @@ public class ConfirmFinalOrderActivity extends AppCompatActivity
         addressEditText = (EditText) findViewById(R.id.shipment_adress);
         cityEditText = (EditText) findViewById(R.id.shipment_city);
 
+        userInfoDisplay(nameEditText, phoneEditText);
+
         confirmOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,6 +56,33 @@ public class ConfirmFinalOrderActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    private void userInfoDisplay(final EditText nameEditText, final EditText phoneEditText)
+    {
+        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUsers.getPhone());
+
+        UsersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                {
+                    if (dataSnapshot.child("name").exists())
+                    {
+                        String name = dataSnapshot.child("name").getValue().toString();
+                        String phone = dataSnapshot.child("phone").getValue().toString();
+
+                        nameEditText.setText(name);
+                        phoneEditText.setText(phone);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void check()

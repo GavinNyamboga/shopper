@@ -38,7 +38,7 @@ public class AdminUserProductsActivity extends AppCompatActivity {
         //passing string(phone number) from AdminNewOrdersActivity line 63
         userID = getIntent().getStringExtra("uid");
 
-        productsList = findViewById(R.id.products_list);
+        productsList = findViewById(R.id.admin_user_products_list);
         productsList.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         productsList.setLayoutManager(layoutManager);

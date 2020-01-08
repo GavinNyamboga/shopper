@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -29,11 +30,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.TextView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -45,7 +48,8 @@ public class HomeActivity extends AppCompatActivity
 
     private DatabaseReference ProductsRef;
     private RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
+    //RecyclerView.LayoutManager layoutManager;
+    private GridLayoutManager layoutManager;
 
     private String type="";
 
@@ -109,7 +113,9 @@ public class HomeActivity extends AppCompatActivity
 
         recyclerView = findViewById(R.id.recycler_menu);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+
+        layoutManager = new GridLayoutManager(HomeActivity.this,2);
+        //layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
     }

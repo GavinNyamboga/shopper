@@ -2,14 +2,16 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="190dp"
+    android:layout_height="300dp"
     android:layout_marginTop="20dp"
-    android:layout_marginStart="15dp"
-    android:layout_marginEnd="15dp"
-    app:cardElevation="15dp">
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp">
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
@@ -20,7 +22,7 @@
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@android:color/black"
             />
 
         <ImageView
@@ -40,7 +42,7 @@
             android:text="Product Price"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@android:color/black"
             />
 
         <TextView
@@ -52,8 +54,8 @@
             android:layout_marginTop="2dp"
             android:textAlignment="center"
             android:textSize="16sp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@android:color/black"
             />
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

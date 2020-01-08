@@ -20,13 +20,14 @@
             android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:hint="Product name"
-            android:textStyle="bold"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             android:textSize="18sp"
             android:background="@android:color/white"
             android:padding="13dp"
             android:layout_marginTop="5dp"
             android:layout_marginStart="5dp"
-            android:textColorHint="@color/colorPrimaryDark"/>
+            android:textColorHint="@android:color/black"/>
 
         <Button
             android:id="@+id/search_product_btn"
