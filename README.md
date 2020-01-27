@@ -1,6 +1,7 @@
 # Shopper Android App
 This is a project on **Android using Firebase**
-The App is an online shopping system; a user can order products online and pay using online payment systems such as Mpesa, A user can scan Qr codes on goods at select stores and pay for them or even scan the codes to recycle plastic and glass to get reedemable points
+The App is an online shopping system; a user can order products online and pay using online payment systems such as Mpesa, A user can scan Qr codes on goods at select stores and pay for them or even scan the codes to recycle plastic and glass to get reedemable points.
+This App is built on Java
 
 ### Requirements
 * Android Studio
@@ -23,6 +24,7 @@ The App is an online shopping system; a user can order products online and pay u
 6. [Elegant Number Button]
    (https://github.com/ashik94vc/ElegantNumberButton)
 7. [cameraView]
+   (https://github.com/natario1/CameraView)
 8. [Butterknife]
    (https://github.com/JakeWharton/butterknife)
 9. [Retrofit]
