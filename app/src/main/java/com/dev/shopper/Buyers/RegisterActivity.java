@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -23,12 +24,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private Button RegisterButton;
     private EditText InputName, InputPhone, InputPassword;
    // private  EditText RegisterConfirmPassword;
     private ProgressDialog loadingBar;
+    private SweetAlertDialog pDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +46,8 @@ public class RegisterActivity extends AppCompatActivity {
         InputPhone = (EditText) findViewById(R.id.register_phone);
         InputPassword = (EditText) findViewById(R.id.register_password);
         //RegisterConfirmPassword = (EditText) findViewById(R.id.confirm_password);
-        loadingBar = new ProgressDialog(this);
+
+        pDialog = new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
 
         RegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,10 +80,12 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }*/
         else {
-            loadingBar.setTitle("create Account");
-            loadingBar.setMessage("chill kiasi....");
-            loadingBar.setCanceledOnTouchOutside(false);
-            loadingBar.show();
+
+
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Creating your account...");
+            pDialog.setCancelable(false);
+            pDialog.show();
 
             validatePhone(name,phone,password);
         }
@@ -103,13 +111,13 @@ public class RegisterActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
                                         Toast.makeText(RegisterActivity.this, "your account has been created",Toast.LENGTH_SHORT).show();
-                                        loadingBar.dismiss();
+                                        pDialog.dismiss();
 
                                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                         startActivity(intent);
                                     }
                                     else {
-                                        loadingBar.dismiss();
+                                        pDialog.dismiss();
                                         Toast.makeText(RegisterActivity.this, "please try again", Toast.LENGTH_SHORT).show();
                                     }
 
@@ -120,7 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
                 } else
                     {
                         Toast.makeText(RegisterActivity.this,"This " + phone +" already exists", Toast.LENGTH_SHORT).show();
-                        loadingBar.dismiss();
+                        pDialog.dismiss();
                         Toast.makeText(RegisterActivity.this,"please try again using a different phone number", Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);

@@ -40,12 +40,12 @@ public class ConfirmFinalOrderActivity extends AppCompatActivity
         totalAmount = getIntent().getStringExtra("Total Price");
         Toast.makeText(this, "Total Price = ksh "+ totalAmount, Toast.LENGTH_SHORT).show();
 
-        confirmOrderBtn = (Button) findViewById(R.id.confrim_final_order_btn);
+        confirmOrderBtn = findViewById(R.id.confrim_final_order_btn);
 
-        nameEditText = (EditText) findViewById(R.id.shipment_name);
-        phoneEditText = (EditText) findViewById(R.id.shipment_phone_number);
-        addressEditText = (EditText) findViewById(R.id.shipment_adress);
-        cityEditText = (EditText) findViewById(R.id.shipment_city);
+        nameEditText =  findViewById(R.id.shipment_name);
+        phoneEditText = findViewById(R.id.shipment_phone_number);
+        addressEditText = findViewById(R.id.shipment_adress);
+        cityEditText = findViewById(R.id.shipment_city);
 
         userInfoDisplay(nameEditText, phoneEditText);
 
@@ -148,10 +148,13 @@ public class ConfirmFinalOrderActivity extends AppCompatActivity
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful())
                                     {
-                                        Toast.makeText(ConfirmFinalOrderActivity.this, "your final order has been received", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(ConfirmFinalOrderActivity.this, PaymentActivity.class);
+                                        startActivity(intent);
+
+                                        /*Toast.makeText(ConfirmFinalOrderActivity.this, "your final order has been received", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(ConfirmFinalOrderActivity.this, HomeActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
+                                        startActivity(intent);*/
 
                                     }
                                 }

@@ -1,5 +1,6 @@
 package com.dev.shopper.Buyers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -39,6 +41,8 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
 
@@ -51,7 +55,9 @@ public class HomeActivity extends AppCompatActivity
     //RecyclerView.LayoutManager layoutManager;
     private GridLayoutManager layoutManager;
 
+
     private String type="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,23 +79,20 @@ public class HomeActivity extends AppCompatActivity
         Paper.init(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Home");
+        toolbar.setTitle("Shopper");
         setSupportActionBar(toolbar);
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        fab.setOnClickListener(view -> {
 
-                if (!type.equals("Admin"))
-                {
-                    Intent intent = new Intent(HomeActivity.this,CartActivity.class);
-                    startActivity(intent);
-                }
-
-
+            if (!type.equals("Admin"))
+            {
+                Intent intent1 = new Intent(HomeActivity.this,CartActivity.class);
+                startActivity(intent1);
             }
+
+
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -118,6 +121,8 @@ public class HomeActivity extends AppCompatActivity
         //layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+
+
     }
 
     @Override
@@ -137,29 +142,25 @@ public class HomeActivity extends AppCompatActivity
                     {
                         holder.txtProductName.setText(model.getPname());
                         holder.txtProductDescription.setText(model.getDescription());
-                        holder.txtProductPrice.setText("Price = Ksh " + model.getPrice());
+                        holder.txtProductPrice.setText("Price = Ksh " +  model.getPrice());
                         Picasso.get().load(model.getImage()).into(holder.imageView);
 
 
 
-                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view)
+                        holder.itemView.setOnClickListener(view -> {
+
+                            if(type.equals("Admin"))
                             {
-
-                                if(type.equals("Admin"))
-                                {
-                                    Intent intent = new Intent(HomeActivity.this, AdminMaintainProductsActivity.class);
-                                    intent.putExtra("pid",model.getPid());
-                                    startActivity(intent);
-                                }
-                                else {
-                                    Intent intent = new Intent(HomeActivity.this,ProductDetailsActivity.class);
-                                    intent.putExtra("pid", model.getPid());
-                                    startActivity(intent);
-                                }
-
+                                Intent intent = new Intent(HomeActivity.this, AdminMaintainProductsActivity.class);
+                                intent.putExtra("pid",model.getPid());
+                                startActivity(intent);
                             }
+                            else {
+                                Intent intent = new Intent(HomeActivity.this,ProductDetailsActivity.class);
+                                intent.putExtra("pid", model.getPid());
+                                startActivity(intent);
+                            }
+
                         });
 
                     }
@@ -201,9 +202,21 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
+        if (id == R.id.toolbar_search) {
+            Intent intent = new Intent(this,SearchProductsActivity.class);
+            startActivity(intent);
             return true;
-        }*/
+        }
+        else if (id == R.id.toolbar_profile){
+            Intent intent = new Intent(this,SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        else if (id == R.id.toolbar_cart){
+            Intent intent = new Intent(this,CartActivity.class);
+            startActivity(intent);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -234,9 +247,10 @@ public class HomeActivity extends AppCompatActivity
             }
 
         }
-        else if (id == R.id.nav_categories)
+        else if (id == R.id.nav_scan)
         {
-
+            Intent intent = new Intent(this,ScanBarcodeActivity.class);
+            startActivity(intent);
         }
         else if (id == R.id.nav_settings)
         {
@@ -251,16 +265,45 @@ public class HomeActivity extends AppCompatActivity
         {
             if (!type.equals("Admin"))
             {
-                Paper.book().destroy();
 
-                Intent intent = new Intent(HomeActivity.this,MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
+                CharSequence options[] = new CharSequence[]
+                        {
+                                "Yes",
+                                "No"
+                        };
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                builder.setTitle("Are you sure you want to log out?");
+                builder.setItems(options, (dialogInterface, i) -> {
+                    if (i == 0) //admin presses yes
+                    {
+
+                        Paper.book().destroy();
+
+                        Intent intent = new Intent(HomeActivity.this,MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                    else //admin presses no
+                    {
+                        Intent intent = new Intent(HomeActivity.this,HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+
+                });
+                builder.show();
+
+
+                        }
+
+
             }
 
 
-        }
+
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

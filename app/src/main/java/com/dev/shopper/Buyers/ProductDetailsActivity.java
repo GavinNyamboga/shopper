@@ -45,32 +45,28 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         productID = getIntent().getStringExtra("pid");
 
-        addToCartButton = (Button) findViewById(R.id.pd_add_to_cart_button);
-        productImage = (ImageView) findViewById(R.id.product_image_details);
-        numberButton = (ElegantNumberButton) findViewById(R.id.number_btn);
-        productPrice = (TextView) findViewById(R.id.product_description_price);
-        productDescription = (TextView) findViewById(R.id.product_description_details);
-        productName = (TextView) findViewById(R.id.product_name_details);
+        addToCartButton = findViewById(R.id.pd_add_to_cart_button);
+        productImage = findViewById(R.id.product_image_details);
+        numberButton = findViewById(R.id.number_btn);
+        productPrice =  findViewById(R.id.product_description_price);
+        productDescription = findViewById(R.id.product_description_details);
+        productName =  findViewById(R.id.product_name_details);
 
         getProductDetails(productID);
 
         //add to cart
-        addToCartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
+        addToCartButton.setOnClickListener(view -> {
+            addingToCartList();
+
+           if (state.equals("Order Placed") || state.equals("Order Shipped"))
+            {
+                Toast.makeText(ProductDetailsActivity.this, "you can buy more products, once your order is shipped or confirmed", Toast.LENGTH_LONG).show();
+            }
+            else
             {
                 addingToCartList();
-
-               if (state.equals("Order Placed") || state.equals("Order Shipped"))
-                {
-                    Toast.makeText(ProductDetailsActivity.this, "you can buy more products, once your order is shipped or confirmed", Toast.LENGTH_LONG).show();
                 }
-                else
-                {
-                    addingToCartList();
-                    }
 
-            }
         });
 
     }
@@ -104,39 +100,34 @@ public class ProductDetailsActivity extends AppCompatActivity {
         cartMap.put("time", saveCurrentTime);
         cartMap.put("quantity", numberButton.getNumber());
         cartMap.put("discount", "");
+        //cartMap.put("image", productImage);
+
+
 
 
         cartListRef.child("User View").child(Prevalent.currentOnlineUsers.getPhone())
                 .child("Products").child(productID)
                 .updateChildren(cartMap)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
                     {
-                        if (task.isSuccessful())
-                        {
-                            cartListRef.child("Admin View").child(Prevalent.currentOnlineUsers.getPhone())
-                                    .child("Products").child(productID)
-                                    .updateChildren(cartMap)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task)
-                                        {
-                                            if (task.isSuccessful())
-                                            {
-                                                Toast.makeText(ProductDetailsActivity.this, "Added to Cart List..", Toast.LENGTH_SHORT).show();
+                        cartListRef.child("Admin View").child(Prevalent.currentOnlineUsers.getPhone())
+                                .child("Products").child(productID)
+                                .updateChildren(cartMap)
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful())
+                                    {
+                                        Toast.makeText(ProductDetailsActivity.this, "Added to Cart List..", Toast.LENGTH_SHORT).show();
 
-                                                Intent intent = new Intent(ProductDetailsActivity.this, HomeActivity.class);
-                                                startActivity(intent);
+                                        Intent intent = new Intent(ProductDetailsActivity.this, HomeActivity.class);
+                                        startActivity(intent);
 
-                                            }
+                                    }
 
-                                        }
-                                    });
-
-                        }
+                                });
 
                     }
+
                 });
 
 

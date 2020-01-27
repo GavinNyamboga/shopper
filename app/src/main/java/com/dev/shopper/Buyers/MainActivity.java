@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -21,22 +22,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.paperdb.Paper;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button registerButton,loginButton;
 
-    private ProgressDialog loadingBar;
+
+   private SweetAlertDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        registerButton = (Button)  findViewById(R.id.main_register_btn);
-        loginButton = (Button) findViewById(R.id.main_login_btn);
-        loadingBar = new ProgressDialog(this);
+        registerButton = findViewById(R.id.main_register_btn);
+        loginButton = findViewById(R.id.main_login_btn);
+
+        pDialog = new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
+
 
 
 
@@ -71,10 +76,12 @@ public class MainActivity extends AppCompatActivity {
             {
                 AllowAccess(UserPhoneKey, UserPasswordKey);
 
-                loadingBar.setTitle("Already Logged in");
-                loadingBar.setMessage("chill kiasi....");
-                loadingBar.setCanceledOnTouchOutside(false);
-                loadingBar.show();
+
+                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                pDialog.setTitleText("Loading...");
+                pDialog.setCancelable(false);
+                pDialog.show();
+
             }
         }
     }
@@ -101,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
                         if (usersData.getPassword().equals(password))
                         {
                                 Toast.makeText(MainActivity.this,"logged in successfully",Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
+                                pDialog.dismiss();
+
 
                                 Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                                 Prevalent.currentOnlineUsers = usersData;
@@ -111,14 +119,14 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                         else{
-                            loadingBar.dismiss();
+                            pDialog.dismiss();
                             Toast.makeText(MainActivity.this, "password is incorrect",Toast.LENGTH_SHORT).show();
                         }
                     }
 
                 else {
                     Toast.makeText(MainActivity.this, "Account does not exist", Toast.LENGTH_SHORT).show();
-                    loadingBar.dismiss();
+                    pDialog.dismiss();
                 }
 
             }
