@@ -10,6 +10,9 @@ This App is built on Java
 * [Safaricom Developer Portal] for Mpesa Intergration
   (https://developer/safaricom.co.ke/docs)
 
+### Demo
+https://appetize.io/app/31x15n3t8kw3kv3w14fu2xgt6w
+
 ### Libraries Used
 1. [SweetAlert]
    (https://github.com/pedant/sweet-alert-dialog)
