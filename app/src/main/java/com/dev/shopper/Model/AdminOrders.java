@@ -2,12 +2,14 @@ package com.dev.shopper.Model;
 
 public class AdminOrders
 {
-    private String name,phone, address, city, state, date, time, totalAmount;
+    private String name,phone, address, city, state, date, time, totalAmount, payment;
 
 
     public AdminOrders(){
 
     }
+
+
 
     public AdminOrders(String name, String phone, String address, String city, String state, String date, String time, String totalAmount) {
         this.name = name;
@@ -18,6 +20,7 @@ public class AdminOrders
         this.date = date;
         this.time = time;
         this.totalAmount = totalAmount;
+        this.payment = payment;
     }
 
     public String getName() {
@@ -82,5 +85,12 @@ public class AdminOrders
 
     public void setTotalAmount(String totalAmount) {
         this.totalAmount = totalAmount;
+    }
+    public String getPayment() {
+        return payment;
+    }
+
+    public void setPayment(String payment) {
+        this.payment = payment;
     }
 }

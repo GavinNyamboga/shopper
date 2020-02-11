@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -35,6 +37,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         private TextView productPrice, productDescription, productName;
         private Button addToCartButton;
         private String productID = "", state = "Normal";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -90,6 +93,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
         saveCurrentTime = currentTime.format(calForDate.getTime());
 
+
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
 
         final HashMap<String, Object> cartMap = new HashMap<>();
@@ -100,7 +104,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         cartMap.put("time", saveCurrentTime);
         cartMap.put("quantity", numberButton.getNumber());
         cartMap.put("discount", "");
-        //cartMap.put("image", productImage);
+        cartMap.put("image", "");
 
 
 
@@ -148,7 +152,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
                     productName.setText(products.getPname());
                     productDescription.setText(products.getDescription());
-                    productPrice.setText(products.getPrice());
+
+                   /* int price = Integer.parseInt(products.getPrice()) ;
+                    NumberFormat format = NumberFormat.getInstance();
+                    format.setMaximumFractionDigits(1);
+
+                    productPrice.setText("Ksh " + format.format(price));*/
+                    productPrice.setText("ksh" + products.getPrice());
                     Picasso.get().load(products.getImage()).into(productImage);
                 }
 

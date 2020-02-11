@@ -17,9 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".Buyers.NotificationActivity"></activity>
-        <activity android:name=".Buyers.MpesaActivity" />
+        <activity android:name=".Buyers.ScannedProductActivity"></activity>
         <activity android:name=".Buyers.PaymentActivity" />
+        <activity android:name=".Buyers.NotificationActivity" />
+        <activity android:name=".Buyers.MpesaActivity" />
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"

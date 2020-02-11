@@ -31,8 +31,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 
 public class CartActivity extends AppCompatActivity
@@ -41,6 +44,7 @@ public class CartActivity extends AppCompatActivity
     private RecyclerView.LayoutManager layoutManager;
     private Button NextBtn;
     private TextView txtTotalAmount, txtMsg1;
+
 
 
     private int overTotalPrice = 0;
@@ -80,7 +84,7 @@ public class CartActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
 
-        txtTotalAmount.setText("Total price = ksh " + String.valueOf(overTotalPrice));
+
 
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
 
@@ -103,7 +107,7 @@ public class CartActivity extends AppCompatActivity
                 holder.txtProductName.setText("Price = ksh."+model.getPrice() );
                 holder.txtProductPrice.setText(model.getPname());
 
-               Picasso.get().load(model.getImage()).into(holder.productImage);
+               //Picasso.get().load(model.getImage()).into(holder.productImage);
 
 
 
@@ -111,6 +115,15 @@ public class CartActivity extends AppCompatActivity
 
                 int oneTypeProductTPrice = ((Integer.valueOf(model.getPrice()))) * Integer.valueOf(model.getQuantity());
                 overTotalPrice = overTotalPrice + oneTypeProductTPrice;
+
+
+
+                NumberFormat format = NumberFormat.getInstance();
+                format.setMaximumFractionDigits(1);
+                txtTotalAmount.setText("Total price = ksh " + format.format(Integer.valueOf(overTotalPrice)));
+
+
+
 
                 //Edit and delete items in cart
 
@@ -138,7 +151,7 @@ public class CartActivity extends AppCompatActivity
                                         {
                                             Toast.makeText(CartActivity.this, "Item removed successfully", Toast.LENGTH_SHORT).show();
 
-                                            Intent intent = new Intent(CartActivity.this, HomeActivity.class);
+                                            Intent intent = new Intent(CartActivity.this, CartActivity.class);
                                             startActivity(intent);
                                         }
 

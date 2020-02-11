@@ -12,9 +12,14 @@ import android.widget.EditText;
 
 import com.dev.shopper.Model.AccessToken;
 import com.dev.shopper.Model.STKPush;
+import com.dev.shopper.Prevalent.Prevalent;
 import com.dev.shopper.R;
 import com.dev.shopper.Services.ApiClient;
 import com.dev.shopper.Util.Utils;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,12 +41,14 @@ public class MpesaActivity extends AppCompatActivity implements View.OnClickList
     private ApiClient mApiClient;
     private ProgressDialog mProgressDialog;
     private SweetAlertDialog pDialog;
+    private String totalAmount;
 
     @BindView(R.id.etAmount)
     EditText mAmount;
     @BindView(R.id.etPhone)EditText mPhone;
     @BindView(R.id.btnPay)
     Button mPay;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +60,12 @@ public class MpesaActivity extends AppCompatActivity implements View.OnClickList
         pDialog = new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
         mApiClient = new ApiClient();
         mApiClient.setIsDebug(true); //Set True to enable logging, false to disable.
+
+        totalAmount = getIntent().getStringExtra("Total Price");
+        mAmount.setText(totalAmount);
+        mAmount.setVisibility(View.GONE);
+
+
 
         mPay.setOnClickListener(this);
 
@@ -112,15 +125,33 @@ public class MpesaActivity extends AppCompatActivity implements View.OnClickList
 
         mApiClient.setGetAccessToken(false);
 
-        //Sending the data to the Mpesa API, remember to remove the logging when in production.
+
         mApiClient.mpesaService().sendPush(stkPush).enqueue(new Callback<STKPush>() {
             @Override
             public void onResponse(@NonNull Call<STKPush> call, @NonNull Response<STKPush> response) {
                 /*mProgressDialog.dismiss();*/
                 pDialog.dismiss();
+
+                /*final DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference()
+                        .child("Orders")
+                        .child(Prevalent.currentOnlineUsers.getPhone());
+                HashMap<String, Object> ordersMap = new HashMap<>();
+                ordersMap.put("payment","paid by Mpesa");
+
+                ordersRef.updateChildren(ordersMap);*/
+
                 try {
                     if (response.isSuccessful()) {
                         Timber.d("post submitted to API. %s", response.body());
+
+                        final DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference()
+                                .child("Orders")
+                                .child(Prevalent.currentOnlineUsers.getPhone());
+                        HashMap<String, Object> ordersMap = new HashMap<>();
+                        ordersMap.put("payment","paid by Mpesa");
+
+                        ordersRef.updateChildren(ordersMap);
+
                     } else {
                         Timber.e("Response %s", response.errorBody().string());
                     }

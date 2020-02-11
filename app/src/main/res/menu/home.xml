@@ -20,7 +20,7 @@
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/toolbar_cart"
-        android:title="Search"
+        android:title="Cart"
         android:orderInCategory="300"
         android:icon="@drawable/ic_shopping_cart_white_24dp"
         app:showAsAction="ifRoom"/>

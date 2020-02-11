@@ -14,13 +14,16 @@
         android:textSize="50sp"
         android:fontFamily="@font/indigo_daisy"/>
 
-    <ImageView
+    <TextView
         android:id="@+id/login_applogo"
-        android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/applogo"/>
+        android:text="Shopper"
+        android:fontFamily="@font/indigo_daisy"
+        android:textSize="100sp"
+        android:textColor="@android:color/black"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/phone_layout"
@@ -148,22 +151,6 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginLeft="30dp"/>
-
-    <Button
-        android:id="@+id/click_register_btn"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="10dp"
-        android:layout_width="176dp"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@android:color/white"
-        android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
-        android:text="Click here to register"
-        android:fontFamily="@font/roboto_regular"
-        android:textAllCaps="false"
-        />
 
 
 </RelativeLayout>

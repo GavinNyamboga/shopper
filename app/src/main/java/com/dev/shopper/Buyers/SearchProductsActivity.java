@@ -43,27 +43,20 @@ public class SearchProductsActivity extends AppCompatActivity {
         searchList.setLayoutManager(new GridLayoutManager(SearchProductsActivity.this,2));
 
 
-        inputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_SEARCH)
-                {
-                    SearchInput = inputText.getText().toString();
-                    onStart();
-                }
-                return false;
-            }
-        });
-
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
+        inputText.setOnEditorActionListener((textView, i, keyEvent) -> {
+            if (i == EditorInfo.IME_ACTION_SEARCH)
             {
                 SearchInput = inputText.getText().toString();
-
                 onStart();
-
             }
+            return false;
+        });
+
+        searchBtn.setOnClickListener(view -> {
+            SearchInput = inputText.getText().toString();
+
+            onStart();
+
         });
 
     }
@@ -92,14 +85,10 @@ public class SearchProductsActivity extends AppCompatActivity {
                         Picasso.get().load(model.getImage()).into(holder.imageView);
 
 
-                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view)
-                            {
-                                Intent intent = new Intent(SearchProductsActivity.this, ProductDetailsActivity.class);
-                                intent.putExtra("pid", model.getPid());
-                                startActivity(intent);
-                            }
+                        holder.itemView.setOnClickListener(view -> {
+                            Intent intent = new Intent(SearchProductsActivity.this, ProductDetailsActivity.class);
+                            intent.putExtra("pid", model.getPid());
+                            startActivity(intent);
                         });
 
                     }

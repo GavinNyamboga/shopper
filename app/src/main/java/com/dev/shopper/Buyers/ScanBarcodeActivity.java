@@ -51,6 +51,8 @@ public class ScanBarcodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_barcode);
 
+
+        //ask for permission when activity starts for the first time
         Dexter.withActivity(this)
                 .withPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO})
                 .withListener(new MultiplePermissionsListener() {
@@ -101,10 +103,16 @@ public class ScanBarcodeActivity extends AppCompatActivity {
               {
                   case FirebaseVisionBarcode.TYPE_TEXT:
                   {
-                      createDialog(item.getRawValue());
+
+                      Intent intent = new Intent(this,ScannedProductActivity.class);
+                      intent.putExtra("product_id",item.getRawValue());
+                      startActivity(intent);
+
                   }
                   break;
-                  case FirebaseVisionBarcode.TYPE_URL:
+
+                  //other types of qr codes
+                  /*case FirebaseVisionBarcode.TYPE_URL:
                   {
                       //start Browser Intent
                       Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getRawValue()));
@@ -125,7 +133,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                       createDialog(info);
 
                   }
-                  break;
+                  break;*/
                   default:
                       break;
               }

@@ -10,8 +10,7 @@ import com.dev.shopper.R;
 
 public class NotificationActivity extends AppCompatActivity {
     private static final String TAG = HomeActivity.class.getSimpleName();
-    private TextView txtMessage;
-    private EditText txtRegId;
+
 
 
     @Override
@@ -20,8 +19,7 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification);
 
 
-        txtRegId = findViewById(R.id.txt_reg_id);
-        txtMessage = findViewById(R.id.notification_message);
+
 
 
     }

@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
+import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,6 +43,7 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
@@ -110,7 +112,7 @@ public class HomeActivity extends AppCompatActivity
 
         if (!type.equals("Admin"))
         {
-            userNameTextView.setText(Prevalent.currentOnlineUsers.getName());
+           userNameTextView.setText(Prevalent.currentOnlineUsers.getName());
             Picasso.get().load(Prevalent.currentOnlineUsers.getImage()).placeholder(R.drawable.profile).into(profileImageView);
         }
 
@@ -142,7 +144,13 @@ public class HomeActivity extends AppCompatActivity
                     {
                         holder.txtProductName.setText(model.getPname());
                         holder.txtProductDescription.setText(model.getDescription());
-                        holder.txtProductPrice.setText("Price = Ksh " +  model.getPrice());
+
+                        int price = Integer.parseInt(model.getPrice());
+
+                        NumberFormat format = NumberFormat.getInstance();
+                        format.setMaximumFractionDigits(1);
+                        holder.txtProductPrice.setText("Price = Ksh " + format.format(price) );
+
                         Picasso.get().load(model.getImage()).into(holder.imageView);
 
 
@@ -153,11 +161,13 @@ public class HomeActivity extends AppCompatActivity
                             {
                                 Intent intent = new Intent(HomeActivity.this, AdminMaintainProductsActivity.class);
                                 intent.putExtra("pid",model.getPid());
+
                                 startActivity(intent);
                             }
                             else {
                                 Intent intent = new Intent(HomeActivity.this,ProductDetailsActivity.class);
                                 intent.putExtra("pid", model.getPid());
+
                                 startActivity(intent);
                             }
 
@@ -191,6 +201,7 @@ public class HomeActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+
         return true;
     }
 
@@ -272,7 +283,7 @@ public class HomeActivity extends AppCompatActivity
                                 "No"
                         };
                 AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                builder.setTitle("Are you sure you want to log out?");
+                builder.setTitle(Prevalent.currentOnlineUsers.getName() +", are you sure you want to log out?");
                 builder.setItems(options, (dialogInterface, i) -> {
                     if (i == 0) //admin presses yes
                     {

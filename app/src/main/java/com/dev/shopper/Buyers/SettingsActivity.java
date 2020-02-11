@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +39,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     private CircleImageView profileImageView;
     private EditText fullnameEditText, userPhoneEditText, addressEditText;
-    private TextView profileChangeTextBtn, closeTxtBtn, saveTextBtn;
+    private TextView closeTxtBtn, saveTextBtn;
+    private ImageView profileChangeTextBtn;
 
     private Uri imageUri;
     private String myurl= "";
@@ -55,51 +57,37 @@ public class SettingsActivity extends AppCompatActivity {
 
         storageProfilePictureRef = FirebaseStorage.getInstance().getReference("Profile Pictures");
 
-        profileImageView = (CircleImageView) findViewById(R.id.settings_profile_image);
-        fullnameEditText = (EditText) findViewById(R.id.settings_full_name);
-        userPhoneEditText = (EditText) findViewById(R.id.settings_phone_number);
-        addressEditText= (EditText) findViewById(R.id.settings_address);
-        profileChangeTextBtn = (TextView) findViewById(R.id.change_profile_image_btn);
-        closeTxtBtn = (TextView) findViewById(R.id.close_settings);
-        saveTextBtn = (TextView) findViewById(R.id.update_account_settings);
+        profileImageView = findViewById(R.id.settings_profile_image);
+        fullnameEditText = findViewById(R.id.settings_full_name);
+        userPhoneEditText = findViewById(R.id.settings_phone_number);
+        addressEditText= findViewById(R.id.settings_address);
+        profileChangeTextBtn = findViewById(R.id.change_profile_image_btn);
+        closeTxtBtn = findViewById(R.id.close_settings);
+        saveTextBtn = findViewById(R.id.update_account_settings);
 
         userInfoDisplay(profileImageView, fullnameEditText, userPhoneEditText, addressEditText);
 
-        closeTxtBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
+        closeTxtBtn.setOnClickListener(view -> finish());
+
+        saveTextBtn.setOnClickListener(view -> {
+            if (checker.equals("clicked"))
             {
-                finish();
+                userInfoSaved();
+            }
+            else
+            {
+                updateOnlyUserInfo();
             }
         });
 
-        saveTextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                if (checker.equals("clicked"))
-                {
-                    userInfoSaved();
-                }
-                else
-                {
-                    updateOnlyUserInfo();
-                }
-            }
-        });
+        profileChangeTextBtn.setOnClickListener(view -> {
+            checker = "clicked";
 
-        profileChangeTextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                checker = "clicked";
-
-                CropImage.activity(imageUri)
-                        .setAspectRatio(1,1)
-                        .start(SettingsActivity.this);
+            CropImage.activity(imageUri)
+                    .setAspectRatio(1,1)
+                    .start(SettingsActivity.this);
 
 
-            }
         });
     }
 
@@ -191,37 +179,33 @@ public class SettingsActivity extends AppCompatActivity {
                     return fileRef.getDownloadUrl();
                 }
             })
-            .addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task)
+            .addOnCompleteListener((OnCompleteListener<Uri>) task -> {
+                if (task.isSuccessful())
                 {
-                    if (task.isSuccessful())
-                    {
-                        Uri downloadUrl = task.getResult();
-                        myurl = downloadUrl.toString();
+                    Uri downloadUrl = task.getResult();
+                    myurl = downloadUrl.toString();
 
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
-                        HashMap<String, Object> userMap = new HashMap<>();
-                        userMap.put("name", fullnameEditText.getText().toString());
-                        userMap.put("address", addressEditText.getText().toString());
-                        userMap.put("phone", userPhoneEditText.getText().toString());
-                        userMap.put("image", myurl);
-                        ref.child(Prevalent.currentOnlineUsers.getPhone()).updateChildren(userMap);
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
+                    HashMap<String, Object> userMap = new HashMap<>();
+                    userMap.put("name", fullnameEditText.getText().toString());
+                    userMap.put("address", addressEditText.getText().toString());
+                    userMap.put("phone", userPhoneEditText.getText().toString());
+                    userMap.put("image", myurl);
+                    ref.child(Prevalent.currentOnlineUsers.getPhone()).updateChildren(userMap);
 
-                        ProgressDialog.dismiss();
+                    ProgressDialog.dismiss();
 
-                        startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
-                        Toast.makeText(SettingsActivity.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
-                        finish();
-
-                    }
-                    else
-                    {
-                        ProgressDialog.dismiss();
-                        Toast.makeText(SettingsActivity.this, "an Error occured...", Toast.LENGTH_SHORT).show();
-                    }
+                    startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
+                    Toast.makeText(SettingsActivity.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
+                    finish();
 
                 }
+                else
+                {
+                    ProgressDialog.dismiss();
+                    Toast.makeText(SettingsActivity.this, "an Error occured...", Toast.LENGTH_SHORT).show();
+                }
+
             });
         }
         else

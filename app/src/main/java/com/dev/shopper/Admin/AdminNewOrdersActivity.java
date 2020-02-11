@@ -58,52 +58,47 @@ public class AdminNewOrdersActivity extends AppCompatActivity {
                         holder.userTotalPrice.setText("Total Amount = ksh " + model.getTotalAmount());
                         holder.userShippingAddress.setText("Shipping Address : " + model.getAddress() + "," + model.getCity());
                         holder.userDateTime.setText("Orders at : " + model.getDate() + " " +model.getTime());
+                        holder.payment.setText(model.getPayment());
 
-                        holder.showOrdersButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+                        holder.showOrdersButton.setOnClickListener(view -> {
 
-                                String uID = getRef(position).getKey();
+                            String uID = getRef(position).getKey();
 
-                                Intent intent =new Intent(AdminNewOrdersActivity.this,AdminUserProductsActivity.class);
-                                intent.putExtra("uid",uID);
-                                startActivity(intent);
-                            }
+                            Intent intent =new Intent(AdminNewOrdersActivity.this,AdminUserProductsActivity.class);
+                            intent.putExtra("uid",uID);
+                            startActivity(intent);
                         });
 
-                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                CharSequence options[] = new CharSequence[]
-                                        {
-                                                "Yes",
-                                                "No"
-                                        };
-                                AlertDialog.Builder builder = new AlertDialog.Builder(AdminNewOrdersActivity.this);
-                                builder.setTitle("Have you shipped products for this order?");
-                                builder.setItems(options, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i)
+                        holder.itemView.setOnClickListener(view -> {
+                            CharSequence options1[] = new CharSequence[]
                                     {
-                                        if (i == 0) //admin presses yes
-                                        {
-                                            String uID = getRef(position).getKey();
+                                            "Yes",
+                                            "No"
+                                    };
+                            AlertDialog.Builder builder = new AlertDialog.Builder(AdminNewOrdersActivity.this);
+                            builder.setTitle("Have you shipped products for this order?");
+                            builder.setItems(options1, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i)
+                                {
+                                    if (i == 0) //admin presses yes
+                                    {
+                                        String uID = getRef(position).getKey();
 
-                                            RemoveOrder(uID);
-
-                                        }
-                                        else //admin presses no
-                                            {
-                                                Intent intent = new Intent(AdminNewOrdersActivity.this,AdminNewOrdersActivity.class);
-                                                startActivity(intent);
-                                                finish();
-
-                                            }
+                                        RemoveOrder(uID);
 
                                     }
-                                });
-                                builder.show();
-                            }
+                                    else //admin presses no
+                                        {
+                                            Intent intent = new Intent(AdminNewOrdersActivity.this,AdminNewOrdersActivity.class);
+                                            startActivity(intent);
+                                            finish();
+
+                                        }
+
+                                }
+                            });
+                            builder.show();
                         });
 
 
@@ -129,7 +124,7 @@ public class AdminNewOrdersActivity extends AppCompatActivity {
 
     public static class AdminOrdersViewHolder extends RecyclerView.ViewHolder
     {
-        public TextView userName, userPhoneNumber, userTotalPrice, userDateTime, userShippingAddress;
+        public TextView userName, userPhoneNumber, userTotalPrice, userDateTime, userShippingAddress, payment;
         public Button showOrdersButton;
 
          public AdminOrdersViewHolder(@NonNull View itemView) {
@@ -140,6 +135,7 @@ public class AdminNewOrdersActivity extends AppCompatActivity {
             userTotalPrice = itemView.findViewById(R.id.order_total_price);
             userDateTime = itemView.findViewById(R.id.order_date_time);
             userShippingAddress = itemView.findViewById(R.id.order_address_city);
+            payment = itemView.findViewById(R.id.order_payment);
             showOrdersButton = itemView.findViewById(R.id.show_order_products_btn);
         }
     }

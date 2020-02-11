@@ -38,6 +38,7 @@ public class ConfirmFinalOrderActivity extends AppCompatActivity
         setContentView(R.layout.activity_confirm_final_order);
 
         totalAmount = getIntent().getStringExtra("Total Price");
+
         Toast.makeText(this, "Total Price = ksh "+ totalAmount, Toast.LENGTH_SHORT).show();
 
         confirmOrderBtn = findViewById(R.id.confrim_final_order_btn);
@@ -49,12 +50,7 @@ public class ConfirmFinalOrderActivity extends AppCompatActivity
 
         userInfoDisplay(nameEditText, phoneEditText);
 
-        confirmOrderBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                check();
-            }
-        });
+        confirmOrderBtn.setOnClickListener(view -> check());
 
     }
 
@@ -132,36 +128,29 @@ public class ConfirmFinalOrderActivity extends AppCompatActivity
         ordersMap.put("date", saveCurrentDate);
         ordersMap.put("time", saveCurrentTime);
         ordersMap.put("state","Not shipped");
+        ordersMap.put("payment","not paid");
 
-        ordersRef.updateChildren(ordersMap).addOnCompleteListener(new OnCompleteListener<Void>()
-        {
-            @Override
-            public void onComplete(@NonNull Task<Void> task)
-            {
-                if (task.isSuccessful()){
-                    FirebaseDatabase.getInstance().getReference().child("Cart List")
-                            .child("User View")
-                            .child(Prevalent.currentOnlineUsers.getPhone())
-                            .removeValue()
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful())
-                                    {
-                                        Intent intent = new Intent(ConfirmFinalOrderActivity.this, PaymentActivity.class);
-                                        startActivity(intent);
+        ordersRef.updateChildren(ordersMap).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                FirebaseDatabase.getInstance().getReference().child("Cart List")
+                        .child("User View")
+                        .child(Prevalent.currentOnlineUsers.getPhone())
+                        .removeValue()
+                        .addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful())
+                            {
 
-                                        /*Toast.makeText(ConfirmFinalOrderActivity.this, "your final order has been received", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(ConfirmFinalOrderActivity.this, HomeActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);*/
 
-                                    }
-                                }
-                            });
-                }
+                                Toast.makeText(ConfirmFinalOrderActivity.this, "your delivery details have been received", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(ConfirmFinalOrderActivity.this, MpesaActivity.class);
+                                intent.putExtra("Total Price", String.valueOf(totalAmount));
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
 
+                            }
+                        });
             }
+
         });
 
     }

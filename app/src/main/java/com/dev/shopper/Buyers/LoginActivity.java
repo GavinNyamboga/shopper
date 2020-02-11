@@ -34,7 +34,7 @@ import io.paperdb.Paper;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText loginPhone, loginPassword;
-    private Button LoginButton,RegisterBtn;
+    private Button LoginButton;
     private TextView AdminLink, NotAdminLink, ForgotPassword;
     private SweetAlertDialog pDialog;
 
@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         AdminLink = findViewById(R.id.admin_link);
         NotAdminLink = findViewById(R.id.not_admin_link);
         ForgotPassword =  findViewById(R.id.forgot_password);
-        RegisterBtn =  findViewById(R.id.click_register_btn);
 
 
         pDialog = new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
@@ -79,10 +78,6 @@ public class LoginActivity extends AppCompatActivity {
 
         });
 
-        RegisterBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
-        });
 
 
 

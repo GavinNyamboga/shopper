@@ -54,27 +54,17 @@ import java.util.HashMap;
         ProductImagesRef = FirebaseStorage.getInstance().getReference().child("Product Images");
         ProductsRef = FirebaseDatabase.getInstance().getReference().child("Products");
 
-        AddNewProductBtn = (Button) findViewById(R.id.add_new_product);
-        InputProductName = (EditText) findViewById(R.id.product_name);
-        InputProductDescription = (EditText) findViewById(R.id.product_description);
-        InputProductPrice = (EditText) findViewById(R.id.product_price);
-        InputProductImage = (ImageView) findViewById(R.id.select_product_image );
+        AddNewProductBtn = findViewById(R.id.add_new_product);
+        InputProductName = findViewById(R.id.product_name);
+        InputProductDescription = findViewById(R.id.product_description);
+        InputProductPrice = findViewById(R.id.product_price);
+        InputProductImage = findViewById(R.id.select_product_image );
 
         loadingBar = new ProgressDialog(this);
 
-        InputProductImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                OPenGallery();
-            }
-        });
+        InputProductImage.setOnClickListener(view -> OPenGallery());
 
-        AddNewProductBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ValidateProductData();
-            }
-        });
+        AddNewProductBtn.setOnClickListener(view -> ValidateProductData());
 
     }
 
@@ -156,16 +146,13 @@ import java.util.HashMap;
              public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                  Toast.makeText(AdminAddProductActivity.this, "Product Image Uploaded Successfully...", Toast.LENGTH_SHORT).show();
 
-                 Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                     @Override
-                     public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                         if (!task.isSuccessful())
-                         {
-                             throw task.getException();
-                         }
-                         downloadImageUrl = filePath.getDownloadUrl().toString();
-                         return filePath.getDownloadUrl();
+                 Task<Uri> urlTask = uploadTask.continueWithTask(task -> {
+                     if (!task.isSuccessful())
+                     {
+                         throw task.getException();
                      }
+                     downloadImageUrl = filePath.getDownloadUrl().toString();
+                     return filePath.getDownloadUrl();
                  }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                      @Override
                      public void onComplete(@NonNull Task<Uri> task) {
@@ -196,23 +183,20 @@ import java.util.HashMap;
          productMap.put("pname", Pname);
 
          ProductsRef.child(ProductRandomKey).updateChildren(productMap)
-                 .addOnCompleteListener(new OnCompleteListener<Void>() {
-                     @Override
-                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful())
-                        {
-                            Intent intent = new Intent(AdminAddProductActivity.this, AdminCategoryActivity.class);
-                            startActivity(intent);
+                 .addOnCompleteListener(task -> {
+                    if (task.isSuccessful())
+                    {
+                        Intent intent = new Intent(AdminAddProductActivity.this, AdminCategoryActivity.class);
+                        startActivity(intent);
 
-                            loadingBar.dismiss();
-                            Toast.makeText(AdminAddProductActivity.this, "Product is added successfully...", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            loadingBar.dismiss();
-                            String message = task.getException().toString();
-                            Toast.makeText(AdminAddProductActivity.this, "Error"+ message, Toast.LENGTH_SHORT).show();
-                        }
-                     }
+                        loadingBar.dismiss();
+                        Toast.makeText(AdminAddProductActivity.this, "Product is added successfully...", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        loadingBar.dismiss();
+                        String message = task.getException().toString();
+                        Toast.makeText(AdminAddProductActivity.this, "Error"+ message, Toast.LENGTH_SHORT).show();
+                    }
                  });
 
      }
